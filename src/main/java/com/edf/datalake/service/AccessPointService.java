@@ -32,7 +32,10 @@ public class AccessPointService {
         KafkaTopic temporaryTopic = new KafkaTopic(topic);
         ApiKey entity = apiKeyRepository.findOne(apiKey);
 
-        return (entity != null && entity.getTopics().contains(temporaryTopic));
+        if(entity == null || entity.getTopics() == null || entity.getTopics().isEmpty())
+            return Boolean.FALSE;
+
+        return (entity.getTopics().contains(temporaryTopic));
     }
 
 }

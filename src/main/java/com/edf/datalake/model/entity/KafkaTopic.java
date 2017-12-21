@@ -28,11 +28,12 @@ public class KafkaTopic {
 
     @Override
     public boolean equals(Object other) {
-        return (this == other) &&  this.id.equals( ((KafkaTopic) other).id  );
+        return (this == other) ||  this.id.equals( ((KafkaTopic) other).id  );
     }
 
     @Override
     public int hashCode() {
         return super.hashCode();
     }
+
 }
