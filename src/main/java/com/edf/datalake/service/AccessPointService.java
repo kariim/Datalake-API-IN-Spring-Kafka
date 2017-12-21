@@ -4,7 +4,7 @@ import com.edf.datalake.model.entity.ApiKey;
 import com.edf.datalake.model.entity.KafkaTopic;
 import com.edf.datalake.model.dto.Message;
 import com.edf.datalake.service.dao.ApiKeyRepository;
-import com.edf.datalake.service.dao.TopicRepository;
+import com.edf.datalake.service.kafka.ConsumerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +18,13 @@ public class AccessPointService {
     private ApiKeyRepository apiKeyRepository;
 
     @Autowired
-    private TopicRepository topicRepository;
+    private ConsumerService consumer;
 
     private Logger logger = LoggerFactory.getLogger(AccessPointService.class);
 
     public List<Message> getCurrentMessages(String topic, String apiKey) {
-        // TODO Implement Kafka Consumer service here !
+        logger.info("Getting messages for topic : " + topic);
+        consumer.getMessages(topic, apiKey);
 
         return null;
     }
