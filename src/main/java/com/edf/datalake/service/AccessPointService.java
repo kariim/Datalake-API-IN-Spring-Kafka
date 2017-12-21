@@ -29,10 +29,10 @@ public class AccessPointService {
     }
 
     public Boolean checkPrerequisites(String topic, String apiKey) {
-        KafkaTopic topicEntity = topicRepository.findOne(topic);
-        ApiKey apiKeyEntity = apiKeyRepository.findOne(apiKey);
+        KafkaTopic temporaryTopic = new KafkaTopic(topic);
+        ApiKey entity = apiKeyRepository.findOne(apiKey);
 
-        return topicEntity != null && apiKeyEntity != null;
+        return (entity != null && entity.getTopics().contains(temporaryTopic));
     }
 
 }
