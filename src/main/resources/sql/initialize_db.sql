@@ -1,0 +1,53 @@
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('defaut-metrics');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi2-dsc-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi2-fgai-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi2-mat-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi2-mmd-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi2-wrh-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi1-nucleaire-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi1-plateausdin-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi1-plateausint-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi1-ris-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi1-o2-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi1-thit-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi1-plateaurenouveau-surveillance');
+INSERT INTO public.authorized_topics(url_suffix) VALUES ('osi-test2');
+
+
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0001-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0002-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0003-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0004-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0005-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0006-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0007-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0008-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0009-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0010-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0011-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0012-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0013-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0014-0000-0000-0000-000000000000');
+INSERT INTO public.authorized_api_keys(client_key) VALUES ('test0015-0000-0000-0000-000000000000');
+
+
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0001-0000-0000-0000-000000000000', 'defaut-metrics');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0001-0000-0000-0000-000000000000', 'osi2-dsc-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0001-0000-0000-0000-000000000000', 'osi2-fgai-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0001-0000-0000-0000-000000000000', 'osi2-mat-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0001-0000-0000-0000-000000000000', 'osi2-mmd-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0001-0000-0000-0000-000000000000', 'osi2-wrh-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0002-0000-0000-0000-000000000000', 'defaut-metrics');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0003-0000-0000-0000-000000000000', 'osi2-dsc-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0004-0000-0000-0000-000000000000', 'osi2-fgai-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0005-0000-0000-0000-000000000000', 'osi2-mat-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0006-0000-0000-0000-000000000000', 'osi2-mmd-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0007-0000-0000-0000-000000000000', 'osi2-wrh-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0008-0000-0000-0000-000000000000', 'osi1-nucleaire-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0009-0000-0000-0000-000000000000', 'osi1-plateausdin-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0010-0000-0000-0000-000000000000', 'osi1-plateausint-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0011-0000-0000-0000-000000000000', 'osi1-ris-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0012-0000-0000-0000-000000000000', 'osi1-o2-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0013-0000-0000-0000-000000000000', 'osi1-thit-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0014-0000-0000-0000-000000000000', 'osi1-plateaurenouveau-surveillance');
+INSERT INTO public.authorized_api_keys_topics(client_key, url_suffix) VALUES ('test0015-0000-0000-0000-000000000000', 'osi-test2');
