@@ -1,4 +1,4 @@
-kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic  defaut-metrics
+kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic defaut-metrics
 kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic osi-test2
 kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic osi1-nucleaire-surveillance
 kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic osi1-o2-surveillance
@@ -12,3 +12,6 @@ kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --pa
 kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic osi2-mat-surveillance
 kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic osi2-mmd-surveillance
 kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic osi2-wrh-surveillance
+
+
+

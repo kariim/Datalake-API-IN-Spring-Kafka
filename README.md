@@ -22,7 +22,7 @@ Create Kafka topic
 Create Kafka Producer
 ---------------------
  => Open a new command prompt in the location D:\Software\kafka_2.10-0.10.1.0\bin\windows
- => kafka-console-producer.bat --broker-list localhost:9092 --topic topic_name
+ => kafka-console-producer.bat --broker-list localhost:9092 --topic defaut-metrics
 
 
 Create Kafka Consumer

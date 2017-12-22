@@ -2,6 +2,7 @@ package com.edf.datalake.controller;
 
 import com.edf.datalake.model.dto.Message;
 import com.edf.datalake.service.AccessPointService;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,9 @@ public class ApiInController {
 
 
     @GetMapping(path = "/messages/{topic}", produces = "application/json")
-    public ResponseEntity<List<Message>> getAllMessages(@PathVariable(value = "topic") String topic, @RequestHeader("Authorization") String apiKey) {
+    public ResponseEntity<List<JSONObject>> getAllMessages(@PathVariable(value = "topic") String topic, @RequestHeader("Authorization") String apiKey) {
         Boolean granted = accessPointService.checkPrerequisites(topic, apiKey);
-        List<Message> results = null;
+        List<JSONObject> results = null;
 
         if(granted) {
             results = accessPointService.getCurrentMessages(topic, apiKey);
@@ -36,3 +37,4 @@ public class ApiInController {
     }
 
 }
+
