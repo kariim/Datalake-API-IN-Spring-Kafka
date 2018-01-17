@@ -1,6 +1,6 @@
 package com.edf.datalake.service.kafka;
 
-import com.edf.datalake.model.entity.KafkaTopic;
+import com.edf.datalake.model.KafkaTopic;
 import com.edf.datalake.service.dao.TopicRepository;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;

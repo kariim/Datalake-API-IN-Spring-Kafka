@@ -1,8 +1,7 @@
 package com.edf.datalake.service;
 
-import com.edf.datalake.model.entity.ApiKey;
-import com.edf.datalake.model.entity.KafkaTopic;
-import com.edf.datalake.model.dto.Message;
+import com.edf.datalake.model.ApiKey;
+import com.edf.datalake.model.KafkaTopic;
 import com.edf.datalake.service.dao.ApiKeyRepository;
 import com.edf.datalake.service.kafka.ConsumerService;
 import org.json.simple.JSONObject;

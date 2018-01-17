@@ -1,6 +1,5 @@
 package com.edf.datalake.controller;
 
-import com.edf.datalake.model.dto.Message;
 import com.edf.datalake.service.AccessPointService;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
