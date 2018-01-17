@@ -81,11 +81,12 @@ public class ConsumerService {
         }
     }
 
-    public List<JSONObject> getMessages(String topic, String apiKey) {
+    public List<JSONObject> getMessages(String topic) {
         KafkaConsumer consumer = consumers.get(topic);
         List<JSONObject> results = new ArrayList<>();
 
         try {
+
             ConsumerRecords<String, String> records = consumer.poll( Long.valueOf(env.getProperty(POLL_TME)) );
 
             for (ConsumerRecord<String, String> record : records) {

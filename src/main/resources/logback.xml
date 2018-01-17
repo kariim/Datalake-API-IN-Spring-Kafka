@@ -54,6 +54,7 @@
 
     <root level="error">
         <appender-ref ref="FILE-ERROR" />
+        <appender-ref ref="STDOUT" />
     </root>
 
 </configuration>

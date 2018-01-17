@@ -22,14 +22,15 @@ public class AccessPointService {
 
     private Logger logger = LoggerFactory.getLogger(AccessPointService.class);
 
-    public List<JSONObject> getCurrentMessages(String topic, String apiKey) {
+    public List<JSONObject> getCurrentMessages(String topic) {
         logger.info("Getting messages for topic : " + topic);
-        return consumer.getMessages(topic, apiKey);
+        return consumer.getMessages(topic);
     }
 
     public Boolean checkPrerequisites(String topic, String apiKey) {
         KafkaTopic temporaryTopic = new KafkaTopic(topic);
         ApiKey entity = apiKeyRepository.findOne(apiKey);
+
 
         if(entity == null || entity.getTopics() == null || entity.getTopics().isEmpty())
             return Boolean.FALSE;
