@@ -37,9 +37,15 @@ public class ConsumerService {
     @PostConstruct
     public void initConsumers() {
 
-        final String BOOTStRAP_SERVERS     = "bootstrap.servers";
+        final String SECURITY_LOGIN       = "java.security.auth.login.config";
+        final String SECURITY_KRB5        = "java.security.krb5.conf";
+        final String CLIENT_ID            = "client.id";
+        final String BOOTSTRAP_SERVERS    = "bootstrap.servers";
         final String ZOOKEEPER            = "zookeeper";
         final String GROUP_ID             = "group.id";
+        final String SECURITY_PROTOCOL    = "security.protocol";
+        final String TRUSTSTORE_LOCATION  = "ssl.truststore.location";
+        final String TRUSTSTORE_PASSWORD  = "ssl.truststore.password";
         final String KEY_DESERIALIZER     = "key.deserializer";
         final String VALUE_DESERIALIZER   = "value.deserializer";
         final String AUTO_COMMIT          = "enable.auto.commit";
@@ -51,8 +57,15 @@ public class ConsumerService {
 
         Properties config = new Properties();
 
-        config.put(BOOTStRAP_SERVERS, env.getProperty(BOOTStRAP_SERVERS));
+        System.setProperty(SECURITY_LOGIN, env.getProperty(SECURITY_LOGIN));
+        System.setProperty(SECURITY_KRB5, env.getProperty(SECURITY_KRB5));
+
+        config.put(CLIENT_ID, env.getProperty(CLIENT_ID));
+        config.put(BOOTSTRAP_SERVERS, env.getProperty(BOOTSTRAP_SERVERS));
         config.put(ZOOKEEPER, env.getProperty(ZOOKEEPER));
+        config.put(SECURITY_PROTOCOL, env.getProperty(SECURITY_PROTOCOL));
+        config.put(TRUSTSTORE_LOCATION, env.getProperty(TRUSTSTORE_LOCATION));
+        config.put(TRUSTSTORE_PASSWORD, env.getProperty(TRUSTSTORE_PASSWORD));
         config.put(AUTO_COMMIT, env.getProperty(AUTO_COMMIT));
         config.put(AUTO_COMMIT_INTERVAL, env.getProperty(AUTO_COMMIT_INTERVAL));
         config.put(SESSION_TIMEOUT, env.getProperty(SESSION_TIMEOUT));
