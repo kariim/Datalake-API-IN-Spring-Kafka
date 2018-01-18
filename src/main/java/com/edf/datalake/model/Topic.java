@@ -3,20 +3,13 @@ package com.edf.datalake.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "authorized_topics")
-@EntityListeners(KafkaTopic.class)
-public class KafkaTopic {
+@Table(name = "topics")
+@EntityListeners(Topic.class)
+public class Topic {
 
     @Id
-    @Column(name = "url_suffix")
+    @Column(name = "topic")
     private String id;
-
-    public KafkaTopic() { }
-
-
-    public KafkaTopic(String id) {
-        this.id = id;
-    }
 
     public String getId() {
         return id;
@@ -28,7 +21,7 @@ public class KafkaTopic {
 
     @Override
     public boolean equals(Object other) {
-        return (this == other) ||  this.id.equals( ((KafkaTopic) other).id  );
+        return (this == other) ||  this.id.equals( ((Topic) other).id  );
     }
 
     @Override

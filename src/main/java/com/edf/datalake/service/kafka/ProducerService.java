@@ -1,10 +1,11 @@
 package com.edf.datalake.service.kafka;
 
-import com.edf.datalake.model.KafkaTopic;
+import com.edf.datalake.model.Topic;
 import com.edf.datalake.service.dao.TopicRepository;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.common.errors.WakeupException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,7 +22,7 @@ import java.util.*;
 
 
 @Service
-public class ConsumerService {
+public class ProducerService {
 
     @Autowired
     private Environment env;
@@ -29,14 +30,13 @@ public class ConsumerService {
     @Autowired
     private TopicRepository repository;
 
-    private Map<String, KafkaConsumer> consumers;
-    private Logger logger = LoggerFactory.getLogger(ConsumerService.class);
-    private String POLL_TME = "poll.time";
+    private Map<String, KafkaProducer> producers;
+    private Logger logger = LoggerFactory.getLogger(ProducerService.class);
     private JSONParser jsonParser;
 
 
     @PostConstruct
-    public void initConsumers() {
+    public void initProducers() {
 
         final String SECURITY_LOGIN       = "java.security.auth.login.config";
         final String SECURITY_KRB5        = "java.security.krb5.conf";
@@ -53,7 +53,7 @@ public class ConsumerService {
         final String AUTO_COMMIT_INTERVAL = "auto.commit.interval.ms";
         final String SESSION_TIMEOUT      = "session.timeout.ms";
 
-        consumers = new HashMap<>();
+        producers = new HashMap<>();
         jsonParser = new JSONParser();
 
         Properties config = new Properties();
@@ -73,18 +73,13 @@ public class ConsumerService {
         config.put(KEY_DESERIALIZER, env.getProperty(KEY_DESERIALIZER));
         config.put(VALUE_DESERIALIZER, env.getProperty(VALUE_DESERIALIZER));
 
-        for(KafkaTopic topic : repository.findAll()) {
-            config.put(GROUP_ID, "None");
-            KafkaConsumer consumer = new KafkaConsumer<String, String>(config);
-            logger.info("TOPIC : " + topic.getId());
-            consumer.subscribe(Arrays.asList( topic.getId() ));
+        for(Topic topic : repository.findAll()) {
 
-            consumers.put(topic.getId(), consumer);
         }
     }
 
     public List<JSONObject> getMessages(String topic) {
-        KafkaConsumer consumer = consumers.get(topic);
+        KafkaConsumer consumer = producers.get(topic);
         List<JSONObject> results = new ArrayList<>();
 
         try {
@@ -113,9 +108,7 @@ public class ConsumerService {
 
     @PreDestroy
     public void cleanup() {
-        for(Map.Entry<String, KafkaConsumer> entry : consumers.entrySet()) {
-            entry.getValue().close();
-        }
+
     }
 
 }

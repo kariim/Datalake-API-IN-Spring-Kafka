@@ -1,22 +1,15 @@
 package com.edf.datalake.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-@Table(name = "authorized_api_keys")
+@Table(name = "api_keys")
 @EntityListeners(ApiKey.class)
 public class ApiKey {
 
     @Id
-    @Column(name = "client_key")
+    @Column(name = "api_key")
     private String id;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "authorized_api_keys_topics",
-            joinColumns = @JoinColumn(name = "client_key", referencedColumnName = "client_key"),
-            inverseJoinColumns = @JoinColumn(name = "url_suffix", referencedColumnName = "url_suffix"))
-    private List<KafkaTopic> topics;
 
     public String getId() {
         return id;
@@ -26,11 +19,13 @@ public class ApiKey {
         this.id = id;
     }
 
-    public List<KafkaTopic> getTopics() {
-        return topics;
+    @Override
+    public boolean equals(Object other) {
+        return (this == other) ||  this.id.equals( ((ApiKey) other).id  );
     }
 
-    public void setTopics(List<KafkaTopic> topics) {
-        this.topics = topics;
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }
