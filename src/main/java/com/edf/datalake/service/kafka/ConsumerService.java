@@ -16,6 +16,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.*;
 
 
@@ -73,8 +74,9 @@ public class ConsumerService {
         config.put(VALUE_DESERIALIZER, env.getProperty(VALUE_DESERIALIZER));
 
         for(KafkaTopic topic : repository.findAll()) {
-            config.put(GROUP_ID, topic.getId());
+            config.put(GROUP_ID, "None");
             KafkaConsumer consumer = new KafkaConsumer<String, String>(config);
+            logger.info("TOPIC : " + topic.getId());
             consumer.subscribe(Arrays.asList( topic.getId() ));
 
             consumers.put(topic.getId(), consumer);
@@ -107,6 +109,13 @@ public class ConsumerService {
         }
 
         return results;
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        for(Map.Entry<String, KafkaConsumer> entry : consumers.entrySet()) {
+            entry.getValue().close();
+        }
     }
 
 }
