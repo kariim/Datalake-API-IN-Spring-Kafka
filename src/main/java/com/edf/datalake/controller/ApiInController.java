@@ -1,6 +1,7 @@
 package com.edf.datalake.controller;
 
-import com.edf.datalake.model.dto.MessageDTO;
+import com.edf.datalake.model.dto.GenericMessageDTO;
+import com.edf.datalake.model.dto.RequestDTO;
 import com.edf.datalake.service.AccessPointService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,22 +20,33 @@ public class ApiInController {
 
     private Logger logger = LoggerFactory.getLogger(ApiInController.class);
 
+
+
     @PostMapping(path = "/post-data", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity postJsonContent(@RequestHeader("Authorization") String apiKey,
                                           @RequestHeader("Content-Length") Long length,
-                                          @RequestBody MessageDTO message) {
+                                          @RequestBody RequestDTO request) {
+
+        // Transform the json request format and transform it to either Metric or Surveillance
+        GenericMessageDTO message = accessPointService.checkJsonFormat(request, request.object_type);
 
         if( ! accessPointService.checkRequestLength(length) ) {
+            logger.error("Request length exceeds the authorized limit : 1MB");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        if( ! accessPointService.checkJsonFormat(message) ) {
+        if( message == null ) {
+            logger.error("Json Request doesn't match the SLA criteria !");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        if( ! accessPointService.checkAccessRights(apiKey, message.object_type) ) {
+        if( ! accessPointService.checkAccessRights(apiKey, request.object_type) ) {
+            logger.error("The API KEY or Object type is incorrect !");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
+
+
+        logger.info( message.toString() );
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

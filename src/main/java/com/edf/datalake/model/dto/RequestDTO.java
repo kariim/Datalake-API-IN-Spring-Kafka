@@ -2,7 +2,7 @@ package com.edf.datalake.model.dto;
 
 import java.util.List;
 
-public class MessageDTO {
+public class RequestDTO {
 
     public String object_type;
     public String heartbeat;

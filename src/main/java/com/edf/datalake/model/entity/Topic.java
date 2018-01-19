@@ -1,4 +1,4 @@
-package com.edf.datalake.model;
+package com.edf.datalake.model.entity;
 
 import javax.persistence.*;
 

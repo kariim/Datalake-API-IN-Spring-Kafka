@@ -1,15 +1,9 @@
 package com.edf.datalake.service.kafka;
 
-import com.edf.datalake.model.Topic;
+import com.edf.datalake.model.entity.Topic;
 import com.edf.datalake.service.dao.TopicRepository;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.common.errors.WakeupException;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,33 +72,7 @@ public class ProducerService {
         }
     }
 
-    public List<JSONObject> getMessages(String topic) {
-        KafkaConsumer consumer = producers.get(topic);
-        List<JSONObject> results = new ArrayList<>();
 
-        try {
-
-            ConsumerRecords<String, String> records = consumer.poll( Long.valueOf(env.getProperty(POLL_TME)) );
-
-            for (ConsumerRecord<String, String> record : records) {
-                logger.info(record.value());
-
-                JSONObject result = (JSONObject) jsonParser.parse(record.value());
-                results.add( result );
-
-                logger.info("Entry : " + result.toJSONString());
-            }
-
-        } catch (WakeupException e) {
-            logger.error(e.getMessage());
-        } catch (ConcurrentModificationException e) {
-            logger.error("Im fucking busy");
-        } catch (ParseException e) {
-            logger.error("Impossible to parse entry to JSON");
-        }
-
-        return results;
-    }
 
     @PreDestroy
     public void cleanup() {

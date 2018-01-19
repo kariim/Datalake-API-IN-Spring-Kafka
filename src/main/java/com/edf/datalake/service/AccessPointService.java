@@ -1,10 +1,12 @@
 package com.edf.datalake.service;
 
-import com.edf.datalake.model.ApiKey;
-import com.edf.datalake.model.Topic;
-import com.edf.datalake.model.dto.MessageDTO;
+import com.edf.datalake.model.dto.GenericMessageDTO;
+import com.edf.datalake.model.entity.ApiKey;
+import com.edf.datalake.model.entity.Topic;
+import com.edf.datalake.model.dto.RequestDTO;
 import com.edf.datalake.service.dao.ApiKeyRepository;
 import com.edf.datalake.service.dao.TopicRepository;
+import com.edf.datalake.utils.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class AccessPointService {
     private Environment env;
 
     private static final String REQUEST_SIZE = "max.request.length";
+    private static final String SURVEILLANCE = "topic.surveillance";
+    private static final String METRICS = "topic.metrics";
+
     private Logger logger = LoggerFactory.getLogger(AccessPointService.class);
 
     public Boolean checkRequestLength(Long length) {
@@ -31,8 +36,18 @@ public class AccessPointService {
                 Boolean.FALSE : Boolean.TRUE;
     }
 
-    public Boolean checkJsonFormat(MessageDTO dto) {
-        return Boolean.TRUE;
+    public GenericMessageDTO checkJsonFormat(RequestDTO dto, String type) {
+        GenericMessageDTO result = null;
+
+        if(env.getProperty(SURVEILLANCE).equals(type)) {
+            result = Transformers.requestToSurveillance(dto);
+        }
+
+        if(env.getProperty(METRICS).equals(type)) {
+            result = Transformers.requestToMetric(dto);
+        }
+
+        return result;
     }
 
     public Boolean checkAccessRights(String apiKey, String topic) {
@@ -41,8 +56,5 @@ public class AccessPointService {
 
         return apiKeyEntity != null && topicEntity != null;
     }
-
-
-
 
 }
