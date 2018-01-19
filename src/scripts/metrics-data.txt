@@ -1,0 +1,24 @@
+https://www.json-generator.com/
+
+[
+  '{{repeat(1)}}',
+  {
+    object_type: "metrics",
+    heartbeat: '{{integer(1506002540000, 1506002570000)}}',
+    events: [
+      '{{repeat(10)}}',
+      {
+        timestamp: '{{integer(1506002540000, 1506002570000)}}',
+        hostname: '{{random("noeyy0zl.noe.edf.fr", "noeyy5gs.noe.edf.fr", "pcyyyev8.pcy.edfgdf.fr")}}',
+        instance: '{{lorem(1, "words")}}',
+        metrics_array: [
+          '{{repeat(2)}}',
+          {
+            metric_name: '{{lorem(1, "words")}}',
+            metric_value: '{{lorem(1, "words")}}'
+          }
+        ]
+      }
+    ]
+  }
+]

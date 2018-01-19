@@ -6,6 +6,7 @@ import com.edf.datalake.model.entity.Topic;
 import com.edf.datalake.model.dto.RequestDTO;
 import com.edf.datalake.service.dao.ApiKeyRepository;
 import com.edf.datalake.service.dao.TopicRepository;
+import com.edf.datalake.service.kafka.ProducerService;
 import com.edf.datalake.utils.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +24,15 @@ public class AccessPointService {
     private TopicRepository topicRepository;
 
     @Autowired
+    private ProducerService producerService;
+
+    @Autowired
     private Environment env;
 
     private static final String REQUEST_SIZE = "max.request.length";
     private static final String SURVEILLANCE = "topic.surveillance";
     private static final String METRICS = "topic.metrics";
+    private static final String TOPIC_PREFIX = "topic.prefix";
 
     private Logger logger = LoggerFactory.getLogger(AccessPointService.class);
 
@@ -52,9 +57,12 @@ public class AccessPointService {
 
     public Boolean checkAccessRights(String apiKey, String topic) {
         ApiKey apiKeyEntity = apiKeyRepository.findOne(apiKey);
-        Topic topicEntity = topicRepository.findOne(topic);
+        Topic topicEntity = topicRepository.findOne(env.getProperty(TOPIC_PREFIX) + topic);
 
         return apiKeyEntity != null && topicEntity != null;
     }
 
+    public Boolean produceToKafka(String topic, String apiKey, GenericMessageDTO dto) {
+        return producerService.sendMessages(env.getProperty(TOPIC_PREFIX) + topic, apiKey, dto);
+    }
 }

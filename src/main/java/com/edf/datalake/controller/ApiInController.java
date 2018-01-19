@@ -21,7 +21,6 @@ public class ApiInController {
     private Logger logger = LoggerFactory.getLogger(ApiInController.class);
 
 
-
     @PostMapping(path = "/post-data", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity postJsonContent(@RequestHeader("Authorization") String apiKey,
                                           @RequestHeader("Content-Length") Long length,
@@ -45,10 +44,12 @@ public class ApiInController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
+        if( accessPointService.produceToKafka(message.object_type, apiKey, message) ) {
+            logger.info("Granted, and the message is successfully pushed to Kafka");
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
 
-        logger.info( message.toString() );
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
 }

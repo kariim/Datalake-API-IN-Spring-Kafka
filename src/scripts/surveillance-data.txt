@@ -1,0 +1,20 @@
+https://www.json-generator.com/
+
+[
+  '{{repeat(1)}}',
+  {
+    object_type: "surveillance",
+    heartbeat: '{{integer(1506002540000, 1506002570000)}}',
+    events: [
+      '{{repeat(10)}}',
+      {
+        criticite: '{{random("alert", "warning", "normal")}}',
+        timestamp: '{{integer(1506002540000, 1506002570000)}}',
+        hostname: '{{random("noeyy0zl.noe.edf.fr", "noeyy5gs.noe.edf.fr", "pcyyyev8.pcy.edfgdf.fr")}}',
+        discriminant: '{{lorem(1, "words")}}',
+        module: '{{lorem(1, "words")}}',
+        message: '{{lorem(1, "paragraphs")}}'
+      }
+    ]
+  }
+]
