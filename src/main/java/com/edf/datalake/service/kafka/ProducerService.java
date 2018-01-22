@@ -13,11 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
 
 
 @Service
@@ -36,8 +39,10 @@ public class ProducerService {
     private Map<String, Map<String, KafkaProducer>> producers;
     private Logger logger = LoggerFactory.getLogger(ProducerService.class);
     private ObjectMapper mapper;
-    private static final String SURVEILLANCE_TOPIC_FULLNAME = "topic.surveillance.full.name";
-    private static final String METRICS_TOPIC_FULLNAME = "topic.metrics.full.name";
+    private ConcurrentLinkedQueue<RoutingMessage> messages;
+
+    private static final String SURVEILLANCE_TOPIC_FULL_NAME = "topic.surveillance.full.name";
+    private static final String METRICS_TOPIC_FULL_NAME = "topic.metrics.full.name";
 
     @PostConstruct
     public void initProducers() {
@@ -55,8 +60,12 @@ public class ProducerService {
         final String ACK_STRATEGY         = "acks";
         final String KEY_SERIALIZER       = "key.serializer";
         final String VALUE_SERIALIZER     = "value.serializer";
+        final String BATCH_SIZE           = "batch.size";
+        final String LINGER_MS            = "linger.ms";
 
         producers = new HashMap<>();
+        messages = new ConcurrentLinkedQueue<>();
+        mapper = new ObjectMapper();
 
         Properties config = new Properties();
 
@@ -72,6 +81,8 @@ public class ProducerService {
         config.put(ACK_STRATEGY, env.getProperty(ACK_STRATEGY));
         config.put(KEY_SERIALIZER, env.getProperty(KEY_SERIALIZER));
         config.put(VALUE_SERIALIZER, env.getProperty(VALUE_SERIALIZER));
+        config.put(BATCH_SIZE, env.getProperty(BATCH_SIZE));
+        config.put(LINGER_MS, env.getProperty(LINGER_MS));
 
         List<Topic> topics = topicRepository.findAll();
         List<ApiKey> apiKeys = apiKeyRepository.findAll();
@@ -86,42 +97,34 @@ public class ProducerService {
             }
         }
 
-        mapper = new ObjectMapper();
-
         logger.info("Producers tree initialized successfully");
     }
 
-    public Boolean sendMessages(String topic, String apiKey, GenericMessageDTO dto) {
+    public Boolean storeMessages(String topic, String apiKey, GenericMessageDTO dto) {
         Boolean isSuccess;
 
         logger.info("Begin producing to Kafka. Topic : " + topic);
 
         try {
-            KafkaProducer producer = producers.get(topic).get(apiKey);
             JsonNode node;
-            ProducerRecord<String, String> msg;
+            logger.info("Producing into topic : " + topic);
 
-            if(env.getProperty(SURVEILLANCE_TOPIC_FULLNAME).equals(topic)) {
-                logger.info("Producing into topic : " + topic);
-
+            if(env.getProperty(SURVEILLANCE_TOPIC_FULL_NAME).equals(topic)) {
                 SurveillanceDTO surveillanceDTO = (SurveillanceDTO) dto;
 
                 for(SurveillanceEventDTO entry : surveillanceDTO.events) {
                     node = mapper.valueToTree( entry );
-                    msg = new ProducerRecord<>(topic, node.toString());
-                    producer.send(msg).get();
+                    messages.add( new RoutingMessage(apiKey, topic, node.toString()) );
+
                 }
             }
 
-            if(env.getProperty(METRICS_TOPIC_FULLNAME).equals(topic)) {
-                logger.info("Producing into topic : " + topic);
-
+            if(env.getProperty(METRICS_TOPIC_FULL_NAME).equals(topic)) {
                 MetricDTO metricDTO = (MetricDTO) dto;
 
                 for(MetricEventDTO entry : metricDTO.events) {
                     node = mapper.valueToTree( entry );
-                    msg = new ProducerRecord<>(topic, node.toString());
-                    producer.send(msg).get();
+                    messages.add( new RoutingMessage(apiKey, topic, node.toString()) );
                 }
             }
 
@@ -133,6 +136,27 @@ public class ProducerService {
         }
 
         return isSuccess;
+    }
+
+    @Scheduled(fixedDelay = 1000)
+    public void produceMessages() {
+        logger.info("Start producing messages to Kafka");
+        RoutingMessage msg;
+
+        while ((msg = messages.poll()) != null) {
+            try {
+
+                KafkaProducer producer = producers.get(msg.topic).get(msg.apiKey);
+                producer.send(new ProducerRecord<>(msg.topic, msg.message)).get();
+
+            } catch (InterruptedException e) {
+                logger.error("Interrupted Exception : " + e.toString());
+
+            } catch (ExecutionException e) {
+                logger.error("Execution Exception : " + e.toString());
+            }
+
+        }
     }
 
     @PreDestroy

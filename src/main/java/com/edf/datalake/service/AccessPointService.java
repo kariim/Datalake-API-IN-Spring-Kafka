@@ -63,6 +63,6 @@ public class AccessPointService {
     }
 
     public Boolean produceToKafka(String topic, String apiKey, GenericMessageDTO dto) {
-        return producerService.sendMessages(env.getProperty(TOPIC_PREFIX) + topic, apiKey, dto);
+        return producerService.storeMessages(env.getProperty(TOPIC_PREFIX) + topic, apiKey, dto);
     }
 }
