@@ -115,7 +115,6 @@ public class ProducerService {
                 for(SurveillanceEventDTO entry : surveillanceDTO.events) {
                     node = mapper.valueToTree( entry );
                     messages.add( new RoutingMessage(apiKey, topic, node.toString()) );
-
                 }
             }
 
@@ -140,10 +139,11 @@ public class ProducerService {
 
     @Scheduled(fixedDelay = 1000)
     public void produceMessages() {
-        logger.info("Start producing messages to Kafka");
         RoutingMessage msg;
 
         while ((msg = messages.poll()) != null) {
+            logger.info("Producing messages to Kafka");
+
             try {
 
                 KafkaProducer producer = producers.get(msg.topic).get(msg.apiKey);
@@ -155,7 +155,6 @@ public class ProducerService {
             } catch (ExecutionException e) {
                 logger.error("Execution Exception : " + e.toString());
             }
-
         }
     }
 

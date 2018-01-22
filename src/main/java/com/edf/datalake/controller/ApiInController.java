@@ -30,7 +30,7 @@ public class ApiInController {
         GenericMessageDTO message = accessPointService.checkJsonFormat(request, request.object_type);
 
         if( ! accessPointService.checkRequestLength(length) ) {
-            logger.error("Request length exceeds the authorized limit : 1MB");
+            logger.error("Request length exceeds the authorized limit (1MB). Actual size is : " + length/1048576 +"."+ length%1048576 + "MB");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
