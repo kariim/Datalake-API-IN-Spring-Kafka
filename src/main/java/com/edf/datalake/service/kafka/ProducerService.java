@@ -158,8 +158,7 @@ public class ProducerService {
         }
     }
 
-    @PreDestroy
-    public void cleanup() {
+    public void shutdown() {
         logger.info("Destroying producers tree !");
 
         for(Map.Entry<String, Map<String, KafkaProducer>> entry : producers.entrySet()) {

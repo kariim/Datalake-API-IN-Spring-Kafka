@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api-in")
+@RequestMapping("/v1.0")
 public class ApiInController {
 
     @Autowired
@@ -52,5 +52,10 @@ public class ApiInController {
         return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @GetMapping(path = "/shutdown")
+    public ResponseEntity shutdown() {
+        accessPointService.shutdown();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
 
